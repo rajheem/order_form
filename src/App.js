@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css'
 import emailjs from '@emailjs/browser';
+import img1 from './order-replenishment-form-logo (1).png'
 
 
 const getDatafromLS=()=>{
@@ -144,8 +145,9 @@ function App() {
 
   return (
     <div className="App">
+
         <div className="container w-50 p-3">
-        <h1>Replenishment Order Form</h1>
+            <div><img src={img1}/></div>
         <div id="add_more">
         <button className="btn btn-warning"  style={{color:'white'}} onClick={addFields}>Add Another Item</button>
         </div>

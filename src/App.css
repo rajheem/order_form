@@ -96,3 +96,10 @@ label,span{
   text-align: center;
 }
 
+img {
+  width: 730px;
+  height: 185px;
+  object-fit:cover;
+
+}
+
