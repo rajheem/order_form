@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css'
 import emailjs from '@emailjs/browser';
-import img1 from './order-replenishment-form-logo (1).png'
+import img1 from './order-replenishment-form-logo (3).png'
 
 
 const getDatafromLS=()=>{

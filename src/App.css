@@ -26,7 +26,6 @@
 
 .container{
   text-align: center;
-
   margin:auto;
   border: solid white;
   background-color: #152733;
@@ -97,8 +96,8 @@ label,span{
 }
 
 img {
-  width: 730px;
-  height: 185px;
+  width: 400px;
+  height: 200px;
   object-fit:cover;
 
 }
