@@ -29,7 +29,9 @@
   margin:auto;
   border: solid white;
   background-color: #152733;
-  border-radius: 20px
+  border-radius: 20px;
+  max-width: 40% !important;/*Set your own width %; */
+
 }
 
 body{
@@ -96,7 +98,7 @@ label,span{
 }
 
 img {
-  width: 400px;
+  width: 350px;
   height: 200px;
   object-fit:cover;
 

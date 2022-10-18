@@ -146,7 +146,7 @@ function App() {
   return (
     <div className="App">
 
-        <div className="container w-50 p-3">
+        <div className="container ">
             <div><img src={img1}/></div>
         <div id="add_more">
         <button className="btn btn-warning"  style={{color:'white'}} onClick={addFields}>Add Another Item</button>
