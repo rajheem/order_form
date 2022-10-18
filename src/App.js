@@ -71,46 +71,50 @@ function App() {
       setBranches(event.target.value)
     }
 
-  const handleOrderSubmit=(event)=>{
+  const handleOrderSubmit=(event)=> {
+      if (Object.entries(formFields) < 1) {
+          event.preventDefault();
+          return alert("You Must Enter an Item and Quantity to Continue")
+      } else {
+          event.preventDefault();
+          let orders = {
+              first: firstname,
+              last: lastname,
+              branch: branches,
+              orderplace: formFields,
+              fulfildate: selectedDate,
 
-    event.preventDefault();
-    let orders={
-      first:firstname,
-        last:lastname,
-        branch:branches,
-      orderplace:formFields,
-        fulfildate:selectedDate,
+          }
+          db.collection('submitted-order').add({
+              first: firstname,
+              last: lastname,
+              branch: branches,
+              orderplace: formFields,
+              fulfildate: selectedDate,
+              ordersubmitted: date,
+          })
+              .then(() => {
+                  toast("Order Successfully Submitted")
+              })
+              .catch(error => {
+                  toast.error("Something Went Wrong With Your Submission")
+              })
 
-    }
-    db.collection('submitted-order').add({
-        first:firstname,
-        last:lastname,
-        branch:branches,
-        orderplace:formFields,
-        fulfildate:selectedDate,
-        ordersubmitted:date,
-    })
-        .then(()=>{
-            toast("Order Successfully Submitted")
-        })
-        .catch(error=>{
-            toast.error("Something Went Wrong With Your Submission")
-        })
+          emailjs.sendForm('service_wx92jbs', 'template_iej9eya', event.target, 'KEbFNLuE3FZWBxtAS')
+              .then((result) => {
+                  console.log(result.text);
+              }, (error) => {
+                  console.log(error.text);
+              });
+          event.target.reset()
 
-      emailjs.sendForm('service_wx92jbs', 'template_iej9eya', event.target, 'KEbFNLuE3FZWBxtAS')
-          .then((result) => {
-              console.log(result.text);
-          }, (error) => {
-              console.log(error.text);
-          });
-    event.target.reset()
-
-    setOrder([...order,orders]);
-    setFirstName('');
-    setLastName('');
-    setFormFields([{ name: '',quantity: ''},]);
-    setBranches("");
-    setSelectedDate("");
+          setOrder([...order, orders]);
+          setFirstName('');
+          setLastName('');
+          setFormFields([{name: '', quantity: ''},]);
+          setBranches("");
+          setSelectedDate("");
+      }
   }
 
     const form = useRef();
