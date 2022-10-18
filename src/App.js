@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css'
 import {db} from "./firebase"
@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css'
+import emailjs from '@emailjs/browser';
 
 
 const getDatafromLS=()=>{
@@ -22,14 +23,14 @@ let date=new Date()
 
 
 function App() {
-  const [order,setOrder]=useState(getDatafromLS())
-  const [firstname,setFirstName]=useState('')
-    const[lastname,setLastName]=useState('')
-    const [branches,setBranches]=useState()
-    const [selectedDate,setSelectedDate]=useState()
+  const [order,setOrder]=useState(getDatafromLS());
+  const [firstname,setFirstName]=useState('');
+  const[lastname,setLastName]=useState('');
+  const [branches,setBranches]=useState();
+  const [selectedDate,setSelectedDate]=useState();
   const [formFields, setFormFields] = useState([
     { name: '',quantity:''},
-  ])
+  ]);
 
   const handleFormChange = (event, index) => {
     let data = [...formFields];
@@ -71,6 +72,7 @@ function App() {
     }
 
   const handleOrderSubmit=(event)=>{
+
     event.preventDefault();
     let orders={
       first:firstname,
@@ -95,13 +97,34 @@ function App() {
             toast.error("Something Went Wrong With Your Submission")
         })
 
+      emailjs.sendForm('service_wx92jbs', 'template_iej9eya', event.target, 'KEbFNLuE3FZWBxtAS')
+          .then((result) => {
+              console.log(result.text);
+          }, (error) => {
+              console.log(error.text);
+          });
+    event.target.reset()
+
     setOrder([...order,orders]);
-    setFirstName('')
-      setLastName('')
-    setFormFields([{ name: '',quantity: ''},])
-      setBranches("")
-      setSelectedDate("")
+    setFirstName('');
+    setLastName('');
+    setFormFields([{ name: '',quantity: ''},]);
+    setBranches("");
+    setSelectedDate("");
   }
+
+    const form = useRef();
+
+    const sendEmail = (e) => {
+        e.preventDefault();
+
+        emailjs.sendForm('service_wx92jbs', 'template_iej9eya', form.current, 'KEbFNLuE3FZWBxtAS')
+            .then((result) => {
+                console.log(result.text);
+            }, (error) => {
+                console.log(error.text);
+            });
+    };
 
   const deleteOrder=(index)=>{
       const filteredOrder=[...order]
@@ -118,13 +141,13 @@ function App() {
   return (
     <div className="App">
         <div className="container w-50 p-3">
-        <h1>Replenishment Order Form {selectedDate}</h1>
+        <h1>Replenishment Order Form</h1>
         <div id="add_more">
         <button className="btn btn-warning"  style={{color:'white'}} onClick={addFields}>Add Another Item</button>
         </div>
         <div className="form-container">
             <br/>
-      <form id="form" className="form-group" onSubmit={handleOrderSubmit}>
+      <form autoComplete="off" ref={form} id="form" className="form-group" onSubmit={handleOrderSubmit}>
         <input id="inputID"
             required
             className="form-control"
@@ -139,7 +162,7 @@ function App() {
               placeholder='Enter Last Name'
               onChange={handleLastNameInputChange}
               value={lastname}/><br/>
-          <select id="drop" required className="form-select" aria-label="Select Your Branch" value={branches} onChange={handleBranchSelect}>
+          <select id="drop" name="branch" required className="form-select" aria-label="Default select example" value={branches} onChange={handleBranchSelect}>
               <option selected disabled value="">Select Your Branch </option>
               <option value="Branch 1">Branch 1</option>
               <option value="Branch 2">Branch 2</option>
@@ -169,9 +192,9 @@ function App() {
           return (
             <div  className="input-group mb-3" key={index}>
               <input
-                  id="inputID"
-                  required
-                  className="form-control"
+                id="inputID"
+                required
+                className="form-control"
                 name='name'
                 placeholder='Item'
                 onChange={event => handleFormChange(event, index)}
@@ -208,13 +231,9 @@ function App() {
         </div>
 
       <div>
-
-
-              <View order={order} />
-
-
+          <View order={order} />
       </div>
-            <ToastContainer />
+            <ToastContainer className="toast-position" position="top-center" />
         </div>
     </div>
 

@@ -91,3 +91,8 @@ label,span{
   color:white;
 }
 
+.toast-position{
+  align-items: center;
+  text-align: center;
+}
+
